@@ -1,0 +1,9 @@
+Market Data Gathering, Analysis and Trading application.
+
+Dependencies: R, Ruby
+
+Load:
+- Scripts for gathering market data from the web
+
+r:
+- Scripts for analysis and trading simulation
