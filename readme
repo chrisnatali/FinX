@@ -7,3 +7,55 @@ Load:
 
 r:
 - Scripts for analysis and trading simulation
+
+Setup:
+- Set the FINX_HOME env variable to the home directory
+  of your FinX environment 
+  (i.e. export FINX_HOME=/home/joe_schmoe/FinX)
+
+- cd to the load directory
+
+- Retrieve stock data from the web
+
+-- Run ./scripts/stock_set_update.sh
+   This loads the set of stocks (without their data)
+
+-- Run ./scripts/stock_detail_update.sh tick-cap
+   This gets the detail data for each stock of interest
+   (currently only the dividend rate)
+
+-- Run ./scripts/stock_history_update.sh tick-cap
+   This gets daily trade data going back to 2000 for all
+   stocks in the set retrieved earlier.
+
+- Load R environment with stock data
+
+-- Run R (from the load directory)
+
+-- execute load-tdt.R via:  load('../source/load-tdt.R')
+   This loads the ticker history into one large dataframe,
+   and adds some calculated columns to it.
+
+-- Use buy-sell.R as template for selecting sets of tick/day
+   combinations to buy or sell and store them in dataframes.
+
+-- Use functions in backtest.R to simulate trading those
+   tick/day combinations.  Pass the dataframes from prior step
+   into bt.sim to simulate trading those positions over the
+   history of market data.  Check bt.pool and bt.ledger for
+   results.  
+
+-- Plot, iterate and analyze as necessary
+
+TODO:
+- Remove outliers by change % (accounts for bad split data)
+- Create market index to relate other data to.  
+- Add varying trend durations and analyze which work best 
+  over different periods (and try to categorize those periods 
+  based on market index)
+- Add clustering of ticks based on trend information.  Include
+  aggregate cluster information into analysis (i.e. if this 
+  stock belongs to a LARGE cluster, then favor it over one in
+  a small cluster).  
+
+

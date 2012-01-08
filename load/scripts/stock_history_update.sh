@@ -49,12 +49,12 @@ cd $FINX_HOME/load
 
 # Same, but from Yahoo
 # Note:  Yahoo date months start at 0 (i.e. Jan=0)
-# ruby -ane 'require "time"; \
-#   tick = $F[0]; \
-#   fr_date = "a=0&b=1&c=2000"; \
-#   to_date = Time.now.strftime("d=%m&e=%d&f=%Y"); \
-#   url = "\"http://ichart.finance.yahoo.com/table.csv?s=#{tick}&#{to_date}&#{fr_date}&ignore=.csv\" -O data/#{tick}.csv"; \
-#   system("wget -nv #{url}");' $1 2>> $log
+ruby -ane 'require "time"; \
+  tick = $F[0]; \
+  fr_date = "a=0&b=1&c=2000"; \
+  to_date = Time.now.strftime("d=%m&e=%d&f=%Y"); \
+  url = "\"http://ichart.finance.yahoo.com/table.csv?s=#{tick}&#{to_date}&#{fr_date}&ignore=.csv\" -O data/#{tick}.csv"; \
+  system("wget -nv #{url}");' $1 2>> $log
 
 # Cat all csv togethor into one space delimed file
 # prepending ticker to each record
