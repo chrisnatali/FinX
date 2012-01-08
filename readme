@@ -49,6 +49,7 @@ Setup:
 
 TODO:
 - Remove outliers by change % (accounts for bad split data)
+  May need to create a histogram of % changes to better assess data
 - Create market index to relate other data to.  
 - Add varying trend durations and analyze which work best 
   over different periods (and try to categorize those periods 
