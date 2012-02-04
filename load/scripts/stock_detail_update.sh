@@ -12,8 +12,9 @@ tick_list=`cut -f1 -d' ' $1`
 
 for tick in $tick_list; do
   wget -nv "http://finance.yahoo.com/q/ks?s=$tick" -O data/$tick.html;
+  shares=`grep 'Shares Outstanding' data/$tick.html | sed 's/\(^.*Shares Outstanding[^y]*yfnc_tabledata1">\)\([^<]*\)<.*$/\2/g'`
   div=`grep 'Forward Annual Dividend Rate' data/$tick.html | sed 's/\(^.*Forward Annual Dividend Rate[^y]*yfnc_tabledata1">\)\([^<]*\)<.*$/\2/g'`
-  echo "$tick $div" >> tick-div
+  echo "$tick $div $shares" >> tick-div
 done
 
 sed 's/&nbsp;//g' tick-div > t-div
