@@ -9,9 +9,21 @@ tdt$i.sym=i.sym
 tdt$o.sym=o.sym
 tdt$chg=chg
 tdt[tdt$o.sym==0, "chg"]=NA
-sl.20=c(rep(NA, 20), sapply(21:nrow(tdt), function(n) { m=lm(tdt$cls[(n-20):(n-1)]~c(1:20)); coefficients(m)[2]/tdt$cls[n-20]*100 }));
+sl.20=c(rep(NA, nrow(tdt)))
+r.sq.20=c(rep(NA, nrow(tdt)))
+for (n in 21:nrow(tdt)) {
+  m = lm(tdt$cls[(n-20):(n-1)] ~ c(1:20))
+  m.sum = summary(m)
+  sl.20[n] = coefficients(m)[2]/tdt$cls[n-20]*100
+  r.sq.20[n] = m.sum$r.squared
+}
+# m.20=c(rep(NA, 20), sapply(21:nrow(tdt), function(n) { lm(tdt$cls[(n-20):(n-1)]~c(1:20)) }));
+# sl.20=c(rep(NA, 20), sapply(21:nrow(tdt), function(n) { m=m.20[n]; coefficients(m)[2]/tdt$cls[n-20]*100 }));
+# r.sq.20=c(rep(NA, 20), sapply(21:nrow(tdt), function(n) { m=m.20[n]; m.sum=summary(m); m.sum$r.squared }));
 tdt$sl.20=sl.20
+tdt$r.sq.20=r.sq.20
 tdt[tdt$o.sym<21, "sl.20"]=NA                            
+tdt[tdt$o.sym<21, "r.sq.20"]=NA                            
 ma.200=c(rep(NA, 200), sapply(201:nrow(tdt), function(n) { mean(tdt$cls[(n-200):(n-1)]) } ))
 tdt$ma.200=ma.200
 tdt[tdt$o.sym<201, "ma.200"]=NA                            
@@ -24,5 +36,5 @@ q.sl.50=c(rep(NA, 50), sapply(51:nrow(qqq), function(n) { m=lm(qqq$cls[(n-50):(n
 split.syms=unique(tdt$sym[tdt$o.sym != 0 & (tdt$chg > 0.55 | tdt$chg < -0.55)])
 
 # Find the "buy" tickers/days via iterating over tdt by day
-day.ticks=by(tdt, day.f, function(x) { q=x[x$sym=="QQQ",];  if((nrow(q)==1) && !is.na(tdt$ma.200[q$id-1]) && (tdt$cls[q$id-1] > tdt$ma.200[q$id-1]) && (nrow(x) > 2)) { ticks=x[!is.na(x$ma.200) & (x$sl.20 > 0.05) & (tdt$chg[x$id-1] < -0.04) & !(x$sym %in% split.syms),]; ticks[sample(1:nrow(ticks), min(10, nrow(ticks))),] } else { x[FALSE,] } })
+day.ticks=by(tdt, day.f, function(x) { q=x[x$sym=="QQQ",];  if((nrow(q)==1) && !is.na(tdt$ma.200[q$id-1]) && (tdt$cls[q$id-1] > tdt$ma.200[q$id-1]) && (nrow(x) > 2)) { ticks=x[!is.na(x$ma.200) & (x$r.sq.20 > 0.5) & (x$sl.20 > 0.05) & (tdt$chg[x$id-1] < -0.04) & !(x$sym %in% split.syms),]; ticks[sample(1:nrow(ticks), min(10, nrow(ticks))),] } else { x[FALSE,] } })
 save.image()
