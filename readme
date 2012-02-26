@@ -48,14 +48,10 @@ Setup:
 -- Plot, iterate and analyze as necessary
 
 TODO:
-- Remove outliers by change % (accounts for bad split data)
-  May need to create a histogram of % changes to better assess data
-  DONE:  Filter out trades of tickers with chg > 0.55 and < -0.55
-- Determine measure of fit of the linear regression
-  - Understand what the linear fit is doing
-  - Extract the measure of fitness 
-    (see various outputs of lm class...residuals, model, qr, etc)
-  - Only use fits that are "strong"
+- Simulate shorts & test
+- Elaborate & Refine functionality (i.e. Run nightly & emit buys/sells)
+- Run nightly on home Linux machine (add RAM)
+- Formalize abstraction into DDL
 - Create market index to relate other data to.  
   - Retrieve outstanding shares data
   - Pull in ticker level data to R data frame
