@@ -64,5 +64,6 @@ TODO:
   aggregate cluster information into analysis (i.e. if this 
   stock belongs to a LARGE cluster, then favor it over one in
   a small cluster).  
-
+- Rather than a random sample of those stocks selected via a signal,
+  order them by how closely they match the signal.
 

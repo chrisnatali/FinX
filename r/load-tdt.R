@@ -36,5 +36,6 @@ q.sl.50=c(rep(NA, 50), sapply(51:nrow(qqq), function(n) { m=lm(qqq$cls[(n-50):(n
 split.syms=unique(tdt$sym[tdt$o.sym != 0 & (tdt$chg > 0.55 | tdt$chg < -0.55)])
 
 # Find the "buy" tickers/days via iterating over tdt by day
-day.ticks=by(tdt, day.f, function(x) { q=x[x$sym=="QQQ",];  if((nrow(q)==1) && !is.na(tdt$ma.200[q$id-1]) && (tdt$cls[q$id-1] > tdt$ma.200[q$id-1]) && (nrow(x) > 2)) { ticks=x[!is.na(x$ma.200) & (x$r.sq.20 > 0.5) & (x$sl.20 > 0.05) & (tdt$chg[x$id-1] < -0.04) & !(x$sym %in% split.syms),]; ticks[sample(1:nrow(ticks), min(10, nrow(ticks))),] } else { x[FALSE,] } })
+# day.ticks=by(tdt, day.f, function(x) { q=x[x$sym=="QQQ",];  if((nrow(q)==1) && !is.na(tdt$ma.200[q$id-1]) && (tdt$cls[q$id-1] > tdt$ma.200[q$id-1]) && (nrow(x) > 2)) { ticks=x[!is.na(x$ma.200) & (x$r.sq.20 > 0.5) & (x$sl.20 > 0.05) & (tdt$chg[x$id-1] < -0.04) & !(x$sym %in% split.syms),]; ticks[sample(1:nrow(ticks), min(10, nrow(ticks))),] } else { x[FALSE,] } })
+day.ticks=by(tdt, day.f, function(x) { if(nrow(x) > 2 && !is.na(x$sl.20)) { ticks=x[!is.na(x$ma.200) & (x$r.sq.20 > 0.8) & (x$sl.20 > 0.05) & (tdt$chg[x$id-1] < -0.04) & !(x$sym %in% split.syms),]; ticks[sample(1:nrow(ticks), min(10, nrow(ticks))),] } else { x[FALSE,] } })
 save.image()
